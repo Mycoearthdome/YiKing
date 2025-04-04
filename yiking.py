@@ -1,5 +1,6 @@
 from pynput import keyboard
 import threading
+import random
 
 Draw = False
 End_Program = False
@@ -30,7 +31,7 @@ hexagrams_dict = {
     0b000000: "1- K'ien - Le Créateur - Heaven",
     0b111111: "2- K'ouen - Le Réceptif - Earth over Earth",
     0b011101: "3 - Tchouen' - La difficulté initiale - Water over Thunder",
-    0b010001: "4 - Mong - La folie Juvénile - Mountain over Water",
+    0b101110: "4 - Mong - La folie Juvénile - Mountain over Water",
     0b000101: "5 - Su - L'Attente / La Nutrition - Water over Heaven",
     0b101000: "6 - Soung - Le Conflit - Heaven over Water",
     0b101111: "7 - Sze -L'Armée - Earth over Water",
@@ -97,7 +98,7 @@ Le_Livre_Des_Transformations_KEYS = {
     0b000000: 0,
     0b111111: 63,
     0b011101: 29,
-    0b010001: 17,
+    0b101110: 46,
     0b000101: 5,
     0b101000: 40,
     0b101111: 47,
@@ -160,10 +161,7 @@ Le_Livre_Des_Transformations_KEYS = {
     0b101010: 42,
 }
 
-YinYang_OLD = {
-    6:0,
-    9:0
-}
+YinYang = [6,7,8,9]
 
 Hexagram = {
     0:"0",
@@ -174,16 +172,22 @@ Hexagram = {
     5:"0"
 }
 
-def order_YinYang(YinYang_OLD, Count, House):
-    global Hexagram
-    for Status in YinYang_OLD:
-        if Status == Count:
-            if YinYang_OLD[Status] == 0:
-                YinYang_OLD[Status] = 1
-            else:
-                YinYang_OLD[Status] = 0
-            break
-    if Count == 6 or Count == 9: # Changing...
+Hexagram_NOW = {
+    0:"0",
+    1:"0",
+    2:"0",
+    3:"0",
+    4:"0",
+    5:"0"
+}
+
+def order_YinYang(YinYang, House):
+    global Hexagram_NOW, Hexagram
+    for Key in Hexagram:
+            Hexagram_NOW[Key] = Hexagram[Key]
+    Status = random.choice(YinYang)
+    
+    if Status == 6 or Status == 9: # Changing...
         if Hexagram[House] == "0":
             Hexagram[House] = "1"
         else:
@@ -191,35 +195,29 @@ def order_YinYang(YinYang_OLD, Count, House):
         
 
 # Function to convert binary values to Yijing lines
-def convert_to_yijing_lines(binary_str):
+def convert_to_yiking_lines(binary_str):
     return ''.join('--------\n' if bit == '0' else '---  ---\n' for bit in binary_str[::-1])
 
-OLD_NEW = 6
+OLD_NEW = 5  
 House = 0
-Hexagram_NOW = Hexagram
 
 inverted_dict = {v: k for k, v in Le_Livre_Des_Transformations_KEYS.items()}
 
-while not End_Program:
-    OLD_NEW += 1
-    if OLD_NEW > 9:
-        OLD_NEW = 6
-    
+while not End_Program:    
     House += 1
     if House > 5:
         if Draw:
             Drawed = bin(int("".join(Hexagram[bit] for bit in Hexagram), 2))[2:].zfill(6)
-            yijing_lines = convert_to_yijing_lines(Drawed)
+            yijing_lines = convert_to_yiking_lines(Drawed)
             Drawed = int(Drawed, 2)
             print(f"\r{hexagrams_dict[inverted_dict[Drawed_NOW]]} \n{yijing_lines_NOW} \nBECOMES\n\n {hexagrams_dict[inverted_dict[Drawed]]}\n{yijing_lines}")
             Draw = False
         else:
-            Hexagram_NOW = Hexagram
             Drawed_NOW = bin(int("".join(Hexagram_NOW[bit] for bit in Hexagram_NOW), 2))[2:].zfill(6)
-            yijing_lines_NOW = convert_to_yijing_lines(Drawed_NOW)
+            yijing_lines_NOW = convert_to_yiking_lines(Drawed_NOW)
             Drawed_NOW = int(Drawed_NOW, 2)
         House = 0
 
-    order_YinYang(YinYang_OLD, OLD_NEW, House)
+    order_YinYang(YinYang, House)
 
     
