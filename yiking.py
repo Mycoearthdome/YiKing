@@ -279,7 +279,7 @@ while not End_Program:
             Drawed = bin(int("".join(Hexagram[bit] for bit in Hexagram), 2))[2:].zfill(6)
             yijing_lines = convert_to_yiking_lines(Drawed)
             Drawed = int(Drawed, 2)
-            print(f"\rDRAW #{Count}\n\n{hexagrams_dict[inverted_dict[Drawed_NOW]]} \n{yijing_lines_NOW}\nJUGEMENT:{YIKING_JUDGMENTS[inverted_dict[Drawed_NOW]]}\n\nBECOMES\n\nDRAW #{Count}-(future)\n\n{hexagrams_dict[inverted_dict[Drawed]]}\n{yijing_lines}\nJUGEMENT:{YIKING_JUDGMENTS[inverted_dict[Drawed]]}\n\n")
+            print(f"\r  DRAW #{Count}\n\n{hexagrams_dict[inverted_dict[Drawed_NOW]]} \n{yijing_lines_NOW}\nJUGEMENT:{YIKING_JUDGMENTS[inverted_dict[Drawed_NOW]]}\n\nBECOMES\n\nDRAW #{Count}-(future)\n\n{hexagrams_dict[inverted_dict[Drawed]]}\n{yijing_lines}\nJUGEMENT:{YIKING_JUDGMENTS[inverted_dict[Drawed]]}\n\n")
             Draw = False
         else:
             Drawed_NOW = bin(int("".join(Hexagram_NOW[bit] for bit in Hexagram_NOW), 2))[2:].zfill(6)
